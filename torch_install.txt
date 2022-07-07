@@ -1,0 +1,1 @@
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org torch===0.3.1 torchvision===0.2.0 -f https://download.pytorch.org/whl/torch_stable.html
