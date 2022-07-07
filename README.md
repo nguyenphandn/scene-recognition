@@ -1,71 +1,60 @@
-# Release of Places365-CNNs
-We release various convolutional neural networks (CNNs) trained on Places365 to the public. Places365 is the latest subset of [Places2 Database](http://places2.csail.mit.edu). There are two versions of Places365: **Places365-Standard** and **Places365-Challenge**. The train set of Places365-Standard has ~1.8 million images from 365 scene categories, where there are at most 5000 images per category. We have trained various baseline CNNs on the Places365-Standard and released them as below. Meanwhile, the train set of Places365-Challenge has extra 6.2 million images along with all the images of Places365-Standard (so totally ~8 million images), where there are at most 40,000 images per category. Places365-Challenge will be used for the Places2 Challenge 2016 to be held in conjunction with the [ILSVRC](http://www.image-net.org/challenges/LSVRC/) and [COCO](http://mscoco.org/dataset/#overview) joint workshop at [ECCV 2016](http://www.eccv2016.org/). 
+# Scene Recognition
 
-The data Places365-Standard and Places365-Challenge are released at [Places2 website](http://places2.csail.mit.edu).
+## Install requirements:
 
-### Pre-trained CNN models on Places365-Standard:
-
-* AlexNet-places365: [deploy](deploy_alexnet_places365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/alexnet_places365.caffemodel)
-* GoogLeNet-places365: [deploy](deploy_googlenet_places365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/googlenet_places365.caffemodel)
-* VGG16-places365: [deploy](deploy_vgg16_places365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/vgg16_places365.caffemodel)
-* VGG16-hybrid1365: [deploy](deploy_vgg16_hybrid1365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/vgg16_hybrid1365.caffemodel)
-* ResNet152-places365 fine-tuned from [ResNet152-ImageNet](https://github.com/KaimingHe/deep-residual-networks/blob/master/prototxt/ResNet-152-deploy.prototxt): [deploy](deploy_resnet152_places365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/resnet152_places365.caffemodel) 
-* ResNet152-hybrid1365: [deploy](deploy_resnet152_hybrid1365.prototxt) [weights](http://places2.csail.mit.edu/models_places365/resnet152_hybrid1365.caffemodel)
-* ResNet152-places365 trained from scratch using Torch: [torch model](http://places2.csail.mit.edu/models_places365/resnet152_places365.t7) converted caffemodel:[deploy](http://netdissect.csail.mit.edu/dissect/zoo/resnet-152-torch-places365.prototxt) [weights](http://netdissect.csail.mit.edu/dissect/zoo/resnet-152-torch-places365.caffemodel). It is the original ResNet with 152 layers. On the validation set, the top1 error is 45.26% and the top5 error is 15.02%.
-* ResNet50-places365 trained from scratch using Torch: [torch model](http://places2.csail.mit.edu/models_places365/resnet50_places365.t7). It is Preact ResNet with 50 layers. The top1 error is 44.82% and the top5 error is 14.71%.
-* To use the alexnet and vgg16 caffemodels in Torch, use the torch library [loadcaffe](https://github.com/szagoruyko/loadcaffe), where you could simply load the caffe model use the following commands. But note that the input image scale should be from 0-255, which is different to the 0-1 scale in the previous resnet Torch models trained from scratch in [fb.resnet.torch](https://github.com/facebook/fb.resnet.torch).
+### Install Python3.6:
+Deadsnakes is a PPA with newer releases than the default Ubuntu repositories. Add the PPA by entering the following:
 ```
-	require 'loadcaffe'
-	model = loadcaffe.load('deploy_alexnet_places365.prototxt', 'alexnet_places365.caffemodel', 'cudnn')
+sudo add-apt-repository ppa:deadsnakes/ppa
 ```
-* PyTorch Places365 models: [AlexNet](http://places2.csail.mit.edu/models_places365/whole_alexnet_places365_python36.pth.tar), [ResNet18](http://places2.csail.mit.edu/models_places365/whole_resnet18_places365_python36.pth.tar), [ResNet50](http://places2.csail.mit.edu/models_places365/whole_resnet50_places365_python36.pth.tar), [DenseNet161](http://places2.csail.mit.edu/models_places365/whole_densenet161_places365_python36.pth.tar). The models are trained in Python2.7+PyTorch 0.2, then migrated to python36 using [this script](convert_python36.py), see [this issue](https://github.com/CSAILVision/places365/issues/25). **You don't need to untar the pytorch model files, refer to the following placesCNN demo code to see how to load the model**. Run [basic code](run_placesCNN_basic.py) to get the scene prediction from PlacesCNN:
+To update local repositories, use the command:
 ```
-    python run_placesCNN_basic.py
-
-    RESULT ON http://places.csail.mit.edu/demo/12.jpg
-    0.519 -> patio
-    0.394 -> restaurant_patio
-    0.018 -> beer_garden
-    0.017 -> diner/outdoor
-    0.016 -> courtyard
+sudo apt update
 ```
-or run [unified code](run_placesCNN_unified.py) to predict scene categories, indoor/outdoor type, [scene attributes](https://cs.brown.edu/~gen/sunattributes.html), and the [class activation map](http://cnnlocalization.csail.mit.edu/) together from PlacesCNN:
+Install Python3.6:
 ```
-    python run_placesCNN_unified.py
-
-    RESULT ON http://places.csail.mit.edu/demo/6.jpg
-    --TYPE: indoor
-    --SCENE CATEGORIES:
-    0.690 -> food_court
-    0.163 -> cafeteria
-    0.033 -> dining_hall
-    0.022 -> fastfood_restaurant
-    0.016 -> restaurant
-    --SCENE ATTRIBUTES:
-    no horizon, enclosed area, man-made, socializing, indoor lighting, cloth, congregating, eating, working
-    Class activation map is output as cam.jpg
+sudo apt install python3.6
 ```
-<img src="./cam_example.jpg" height="200">
-
-* Train PlacesCNN using Pytorch. The training script is at [here](train_placesCNN.py). Download the Places365 standard easyformat split at [here](http://data.csail.mit.edu/places/places365/places365standard_easyformat.tar). Untar it to some folder. Then run the following:
+Check if Python3.6 is installed:
 ```
-    python train_placesCNN.py -a resnet18 /xxx/yyy/places365standard_easyformat
+ls -ls /usr/bin/python*
+```
+### Create virtual environment and activate it:
+```
+virtualenv -p python3.6 venv
+source venv/bin/activate
+```
+### Install old version of PyTorch:
+Use the below command or copy from [here](torch_install.txt):
+```
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org torch===0.3.1 torchvision===0.2.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
+### Install other requirements:
+```
+pip install -r requirements.txt
 ```
 
-The category index file is [the file](categories_places365.txt). Here we combine the training set of ImageNet 1.2 million data with Places365-Standard to train VGG16-hybrid1365 model, its category index file is [the file](categories_hybrid1365.txt). The indoor and outdoor labels for the categories is in [the file](IO_places365.txt). The scene hierarchy is listed at [here](https://docs.google.com/spreadsheets/d/1H7ADoEIGgbF_eXh9kcJjCs5j_r3VJwke4nebhkdzksg/edit?usp=sharing), with a simple browswer at [here](http://places2.csail.mit.edu/scene_hierarchy.html).
-
-### Performance of the Places365-CNNs
-The performance of the baseline CNNs is listed below. ResidualNet's performance will be updated soon. We use the class score averaged over 10-crops of each testing image to classify. Here we also fine-tune the resNet152 on Places365-standard, for 10 crop average it has 85.08% on the validation set and 85.07% on the test set for top-5 accuracy.
-<img src="http://places2.csail.mit.edu/models_places365/table2.jpg" height="110">
-
-As comparison, we list the performance of the baseline CNNs trained on [Places205](http://places.csail.mit.edu/downloadCNN.html) as below. There are 160 more scene categories in Places365 than the Places205, the top-5 accuracy doesn't drop much.
-<img src="http://places2.csail.mit.edu/models_places365/table1.jpg" height="150">
-
-The performance of the deep features of Places365-CNNs as generic visual features is listed below ResidualNets' performances will be included soon. The setup for each experiment is the same as the ones in our [NIPS'14 paper](http://places.csail.mit.edu/places_NIPS14.pdf)
-<img src="http://places2.csail.mit.edu/models_places365/table3.jpg" height="180">
-
-Some qualitative prediction results using the VGG16-Places365:
-![Prediction](http://places2.csail.mit.edu/models_places365/example_prediction.jpg)
+## Run model:
+Use this command to predict scene categories, indoor/outdoor type, [scene attributes](https://cs.brown.edu/~gen/sunattributes.html), and the [class activation map](http://cnnlocalization.csail.mit.edu/) together from PlacesCNN:
+```
+python run_placesCNN.py --source (YOUR PATH TO IMAGE) --save-txt --save-grad
+```
+The result is as below:
+```
+RESULT ON /photo-location/data/google_landmark_data/images/16.jpg
+--TYPE OF ENVIRONMENT: outdoor
+--SCENE CATEGORIES:
+0.561 -> parking_garage/outdoor
+0.074 -> hotel/outdoor
+0.053 -> apartment_building/outdoor
+0.048 -> embassy
+0.039 -> hospital
+--SCENE ATTRIBUTES:
+man-made, natural light, no horizon, open area, horizontal components, sunny, driving, metal, pavement
+Results saved to runs/detect/exp
+1 labels saved to runs/detect/exp/labels
+Done. (0.441s)
+```
 
 ### Reference
 Link: [Places2 Database](http://places2.csail.mit.edu), [Places1 Database](http://places.csail.mit.edu)
