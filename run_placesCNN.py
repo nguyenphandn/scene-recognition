@@ -201,10 +201,10 @@ if __name__ == '__main__':
                 f.write('outdoor' + '\n')
             f.write('--CATEGORIES:' + '\n')
             for i in range(0, 5):
-                f.write(classes[idx[i]] + ' ')
+                f.write('{:.3f} : {}'.format(probs[i], classes[idx[i]]))
             f.write('\n')
             f.write('--ATTRIBUTES:' + '\n')
-            f.write(' '.join([labels_attribute[idx_a[i]] for i in range(-1,-10,-1)]))
+            f.write(', '.join([labels_attribute[idx_a[i]] for i in range(-1,-10,-1)]))
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         print(f"Results saved to {save_dir}{s}")
 
