@@ -44,13 +44,13 @@ The result is as below:
 RESULT ON /photo-location/data/google_landmark_data/images/example.jpg
 --TYPE OF ENVIRONMENT: outdoor
 --SCENE CATEGORIES:
-0.561 -> parking_garage/outdoor
-0.074 -> hotel/outdoor
-0.053 -> apartment_building/outdoor
-0.048 -> embassy
-0.039 -> hospital
+0.160 -> park
+0.093 -> forest/broadleaf
+0.090 -> lawn
+0.071 -> orchard
+0.061 -> picnic_area
 --SCENE ATTRIBUTES:
-man-made, natural light, no horizon, open area, horizontal components, sunny, driving, metal, pavement
+trees, open area, foliage, natural light, vegetation, leaves, grass, no horizon, natural
 Results saved to runs/detect/exp
 1 labels saved to runs/detect/exp/labels
 Done. (0.441s)
@@ -70,7 +70,6 @@ Please cite the following [IEEE Transaction on Pattern Analysis and Machine Inte
    year={2017},
    publisher={IEEE}
  }
-
 ```
 
 ### Acknowledgements and License
