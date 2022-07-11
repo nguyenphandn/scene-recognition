@@ -200,8 +200,7 @@ if __name__ == '__main__':
             else:
                 f.write('outdoor' + '\n')
             f.write('--CATEGORIES:' + '\n')
-            for i in range(0, 5):
-                f.write('{:.3f} : {}'.format(probs[i], classes[idx[i]]))
+            f.write(', '.join('{:.3f} : {}'.format(probs[i], classes[idx[i]]) for i in range(0, 5)))
             f.write('\n')
             f.write('--ATTRIBUTES:' + '\n')
             f.write(', '.join([labels_attribute[idx_a[i]] for i in range(-1,-10,-1)]))
