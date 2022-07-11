@@ -37,11 +37,11 @@ pip install -r requirements.txt
 ## Run model:
 Use this command to predict scene categories, indoor/outdoor type, [scene attributes](https://cs.brown.edu/~gen/sunattributes.html), and the [class activation map](http://cnnlocalization.csail.mit.edu/) together from PlacesCNN:
 ```
-python run_placesCNN.py --source (YOUR PATH TO IMAGE) --save-txt --save-grad
+python run_placesCNN.py --source path/to/image.jpg --save-txt --save-grad
 ```
 The result is as below:
 ```
-RESULT ON /photo-location/data/google_landmark_data/images/16.jpg
+RESULT ON /photo-location/data/google_landmark_data/images/example.jpg
 --TYPE OF ENVIRONMENT: outdoor
 --SCENE CATEGORIES:
 0.561 -> parking_garage/outdoor
@@ -55,6 +55,7 @@ Results saved to runs/detect/exp
 1 labels saved to runs/detect/exp/labels
 Done. (0.441s)
 ```
+<img src="./example.jpg" height="200">
 
 ### Reference
 Link: [Places2 Database](http://places2.csail.mit.edu), [Places1 Database](http://places.csail.mit.edu)
